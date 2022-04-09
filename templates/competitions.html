@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if current_user.is_authenticated %}
+    <nav>
+        <a href="/"><img src="/static/img/home2.png"></a>
+        <a href="profile">Профиль</a>
+    </nav>
+{% else %}
+    <nav>
+        <a href="/"><img src="/static/img/home2.png"></a>
+        <a href="/register">Зарегистрироваться</a>
+        <a href="/login">Войти</a>
+    </nav>
+{% endif %}
+
+<div class="image-block-variative">
+    <img src="/static/img/msu_var.jpg">
+    <div class="title">
+        <p>Перечень олимпиад РСОШ</p>
+    </div>
+</div>
+{% for orientation in orientations %}
+    {% if loop.index == 1 %}
+        <p class="com-class">{{orientation.orientation}} олимпиады</p>
+    {% else %}
+        <p>{{orientation.orientation}} олимпиады</p>
+    {% endif %}
+    <table class="com-tab">
+        <tr>
+            <th>Наименование олимпиады</th>
+            <th>Профиль</th>
+            <th>Образовательные предметы, соответствующие профилю</th>
+            <th>Уровень олимпиады</th>
+        </tr>
+        {% for competition in competitions[orientation.id].keys() %}
+            <tr>
+                {% if competitions[orientation.id][competition]|length >1 %}
+                    <td rowspan={{competitions[orientation.id][competition]|length}}>{{competition}}</td>
+                {% else %}
+                    <td>{{competition}}</td>
+                {% endif %}
+                {% for i in competitions[orientation.id][competition] %}
+                    {% if loop.index == 1 %}
+                        <td>{{i[0]}}</td>
+                        <td>{{i[1]}}</td>
+                        <td>{{i[2]}}</td>
+            </tr>
+                    {% else %}
+                        <tr>
+                            <td>{{i[0]}}</td>
+                            <td>{{i[1]}}</td>
+                            <td>{{i[2]}}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endfor %}
+{% endblock %}

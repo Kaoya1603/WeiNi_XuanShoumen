@@ -1,20 +1,117 @@
+body {
+  margin: 5px auto;
+  font-family: sans-serif;
+}
+
 nav {
-  position: fixed;
+  position: absolute;
   background: #343232;
   width: 100%;
-  height: 45px;
+  top: 0px;
+  height: 65px;
   font-family: sans-serif;
   font-size: 24px;
-  text-align: right;
+  display: flex;
+  align-items: center;
 }
 
 nav a {
-  color: #FFFFFF;
+  color: #FFF1F1;
   margin: 10px 15px;
-  line-height: 45px;
+  text-decoration: none;
 }
 
-.variative {
+.image-block .image-block-variative {
+  position: relative;
+  top: 65px;
   width: 100%;
-  height: 25%;
+}
+
+.image-block img {
+  position: absolute;
+  top: 65px;
+  width: 100%;
+}
+
+.image-block p {
+  position: absolute;
+  left: 70px;
+  top: 150px;
+  color: #681717;
+  font-size: 60px;
+  text-shadow: 0 0 5px #fff;
+}
+
+.anniu-container {
+  position: absolute;
+  bottom: 150px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.tian {
+  background: rgba(36, 36, 36, 0.5);
+  height: 130px;
+  text-align: center;
+  font-size: 40px;
+}
+
+.tian a {
+  text-decoration: none;
+  color: #FFF1F1;
+  margin: 15px;
+  line-height: 130px;
+  font-family: sans-serif;
+}
+
+.image-block-variative img {
+  opacity: 0.6;
+  position: absolute;
+  width: 100%;
+  top: 65px;
+}
+
+.title {
+  position: absolute;
+  background: rgba(36, 36, 36, 0.5);
+  top: 15%;
+  left: 33%;
+  font-size: 35px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.title p {
+  margin: 10px 15px;
+  color: #681717;
+}
+
+.com-class {
+  margin-top: 350px;
+  font-size: 38px;
+  margin-left: 5%;
+}
+
+p {
+  font-size: 38px;
+  margin-left: 5%;
+}
+
+.com-tab {
+  width: 90%;
+  margin: auto;
+  font-family: sans-serif;
+  font-size: 27px;
+  color: #343232;
+  border: 2px solid grey;
+}
+
+.com-tab th, td {
+  text-align: center;
+  padding: 5px;
+  border: 2px solid grey;
 }
