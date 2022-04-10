@@ -74,23 +74,23 @@ nav a {
 }
 
 .title {
-  position: absolute;
   background: rgba(36, 36, 36, 0.5);
+  left: 15%;
   top: 15%;
-  left: 33%;
   font-size: 35px;
-  height: 100px;
+  height: 90px;
+  position: absolute;
   display: flex;
   align-items: center;
   text-align: center;
 }
 
 .title p {
-  margin: 10px 15px;
+  margin: 10px 50px;
   color: #681717;
 }
 
-.com-class {
+.com-class, form {
   margin-top: 350px;
   font-size: 38px;
   margin-left: 5%;

@@ -22,15 +22,17 @@
 </div>
 {% for orientation in orientations %}
     {% if loop.index == 1 %}
-        <p class="com-class">{{orientation.orientation}} олимпиады</p>
+        <p class="com-class">{{orientation.orientation}} науки</p>
+    {% elif loop.index == 4 %}
+        <p>{{orientation.orientation}}</p>
     {% else %}
-        <p>{{orientation.orientation}} олимпиады</p>
+        <p>{{orientation.orientation}} науки</p>
     {% endif %}
     <table class="com-tab">
         <tr>
             <th>Наименование олимпиады</th>
             <th>Профиль</th>
-            <th>Образовательные предметы, соответствующие профилю</th>
+            <th>Образовательные предметы или специальности, соответствующие профилю</th>
             <th>Уровень олимпиады</th>
         </tr>
         {% for competition in competitions[orientation.id].keys() %}
