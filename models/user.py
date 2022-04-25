@@ -1,16 +1,16 @@
 import sqlalchemy
 from data.db_session import SqlAlchemyBase
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class User(SqlAlchemyBase):
+class User(SqlAlchemyBase, UserMixin):
     __tablename__ = 'users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     surname = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     name = sqlalchemy.Column(sqlalchemy.String, nullable=False)
-    country = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     region = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     grade = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String,

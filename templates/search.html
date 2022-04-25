@@ -17,31 +17,30 @@
 <div class="image-block-variative">
     <img src="/static/img/msu_var.jpg">
     <div class="title">
-        <p>Авторизация</p>
+        <p>Поиск ВУЗа по олимпиаде</p>
     </div>
 </div>
 
 <form action="" method="post">
     {{ form.hidden_tag() }}
     <p>
-        {{ form.email.label }}<br>
-        {{ form.email(class="form-control", type="email") }}<br>
-        {% for error in form.email.errors %}
+        {{ form.competition.label }}<br>
+        {{ form.competition(class="form-control", type="") }}<br>
+        {% for error in form.competition.errors %}
             <div>
                 {{ error }}
             </div>
         {% endfor %}
     </p>
     <p>
-        {{ form.password.label }}<br>
-        {{ form.password(class="form-control", type="password") }}<br>
-        {% for error in form.password.errors %}
+        {{ form.profile.label }}<br>
+        {{ form.profile(class="form-control", type="") }}<br>
+        {% for error in form.profile.errors %}
             <div>
                 {{ error }}
             </div>
         {% endfor %}
     </p>
-    <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
     <p>{{ form.submit(type="submit", class="btn-submit") }}</p>
     <div>{{ message }}</div>
 </form>

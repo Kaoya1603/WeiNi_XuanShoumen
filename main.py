@@ -7,6 +7,8 @@ from models.orientation import Orientation
 from models.user import User
 
 from forms.login import LoginForm
+from forms.register import RegisterForm
+from forms.search import SearchForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -29,6 +31,16 @@ def main():
     #         level=i[4]
     #     )
     #     db_sess.add(new_olymp)
+    # new_user = User(
+    #     surname='Щербина',
+    #     name='Софья',
+    #     region='Приморский край',
+    #     grade=10,
+    #     email='sufeiya_vlstar@mail.ru',
+    #     password='aoyunhui',
+    #     hashed_password='zhongguo'
+    # )
+    # db_sess.add(new_user)
     # db_sess.commit()
     app.run()
 
@@ -72,11 +84,52 @@ def login():
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            return redirect('competitions')
+            return redirect('/')
         return render_template('login.html',
                                message="Неправильный логин или пароль",
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        if form.password.data != form.password_again.data:
+            return render_template('register.html', title='Регистрация',
+                                   form=form,
+                                   message="Пароли не совпадают")
+        db_sess = create_session()
+        if db_sess.query(User).filter(User.email == form.email.data).first():
+            return render_template('register.html', title='Регистрация',
+                                   form=form,
+                                   message="Такой пользователь уже есть")
+        user = User(
+            surname=form.surname.data,
+            name=form.name.data,
+            region=form.region.data,
+            grade=form.grade.data,
+            email=form.email.data,
+            password=form.password.data
+        )
+        user.set_password(form.password.data)
+        db_sess.add(user)
+        db_sess.commit()
+        return redirect('/login')
+    return render_template('register.html', title='Регистрация', form=form)
+
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    form = SearchForm()
+    if form.validate_on_submit():
+        profiles = get_list_of_profiles(form.competition.data)
+        return render_template('search.html', title='Поиск ВУЗа', form=form, current_user=current_user)
+
+
+def get_list_of_profiles(competition):
+    db_sess = create_session()
+    return db_sess.query(Competition).filter(Competition.competition == competition).all()
 
 
 if __name__ == '__main__':

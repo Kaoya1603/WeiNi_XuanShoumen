@@ -1,5 +1,5 @@
 body {
-  margin: 5px auto;
+  margin: 0 auto;
   font-family: sans-serif;
 }
 
@@ -56,14 +56,24 @@ nav a {
   height: 130px;
   text-align: center;
   font-size: 40px;
+  background: #343232;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+  transition: .3s;
+}
+
+.tian:hover {
+  background: #681717;
+  box-shadow: 0 15px 20px rgba(104, 23, 23, .4);
+  color: #FFF1F1;
+  transform: translateY(-7px);
 }
 
 .tian a {
   text-decoration: none;
-  color: #FFF1F1;
-  margin: 15px;
-  line-height: 130px;
+  margin: 0 30px;
+  line-height: 120px;
   font-family: sans-serif;
+  color: #FFF1F1;
 }
 
 .image-block-variative img {
@@ -91,7 +101,7 @@ nav a {
 }
 
 .com-class, form {
-  margin-top: 350px;
+  margin-top: 27%;
   font-size: 38px;
   margin-left: 5%;
 }
@@ -114,4 +124,29 @@ p {
   text-align: center;
   padding: 5px;
   border: 2px solid grey;
+}
+
+.form-control {
+  font-size: 25px;
+}
+
+.btn-submit {
+  border: 0px;
+  width: 400px;
+  height: 60px;
+  line-height: 50px;
+  margin: 0px 20px;
+  font-family: sans-serif;
+  font-size: 25px;
+  text-align: center;
+  color: #FFF1F1;
+  background: #343232;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+  transition: .3s;
+}
+.btn-submit:hover {
+  background: #681717;
+  box-shadow: 0 15px 20px rgba(104, 23, 23, .4);
+  color: #FFF1F1;
+  transform: translateY(-7px);
 }
