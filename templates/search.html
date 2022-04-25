@@ -21,27 +21,36 @@
     </div>
 </div>
 
-<form action="" method="post">
+<form action="/search" method="post">
     {{ form.hidden_tag() }}
     <p>
         {{ form.competition.label }}<br>
-        {{ form.competition(class="form-control", type="") }}<br>
+        {{ form.competition(class="form-control", id="autocomplete", type="") }}<br>
         {% for error in form.competition.errors %}
             <div>
                 {{ error }}
             </div>
         {% endfor %}
     </p>
-    <p>
+    {% if not is_profile_hidden %}
+    <p class="search-form__profile" >
         {{ form.profile.label }}<br>
         {{ form.profile(class="form-control", type="") }}<br>
         {% for error in form.profile.errors %}
-            <div>
+            <div class="search-form__profile__error-wrapper">
                 {{ error }}
             </div>
         {% endfor %}
     </p>
+    {% endif %}
     <p>{{ form.submit(type="submit", class="btn-submit") }}</p>
     <div>{{ message }}</div>
 </form>
+
+<script>
+    var contestNames = {{ contest_names|safe }};
+    <!--    var profiles = {{ profiles|safe }};-->
+    <!--    var profiles_list = [];-->
+</script>
+<script src="{{url_for('static', filename='js/search.js')}}"></script>
 {% endblock %}

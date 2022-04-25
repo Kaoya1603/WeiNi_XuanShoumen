@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request
 from flask_login import LoginManager, login_user, login_required, current_user, logout_user
 from data.db_session import global_init, create_session
 
@@ -10,8 +10,9 @@ from forms.login import LoginForm
 from forms.register import RegisterForm
 from forms.search import SearchForm
 
-app = Flask(__name__)
+app = Flask('__name__')
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+app.config['DEBUG'] = True
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -121,15 +122,20 @@ def register():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
-    form = SearchForm()
-    if form.validate_on_submit():
-        profiles = get_list_of_profiles(form.competition.data)
-        return render_template('search.html', title='Поиск ВУЗа', form=form, current_user=current_user)
-
-
-def get_list_of_profiles(competition):
-    db_sess = create_session()
-    return db_sess.query(Competition).filter(Competition.competition == competition).all()
+    if request.method == 'GET':
+        form = SearchForm()
+        db_sess = create_session()
+        contest_names = list(x[0] for x in db_sess.query(Competition.competition).distinct().all())
+        return render_template('search.html', title='Поиск ВУЗа', form=form, current_user=current_user,
+                               contest_names=contest_names, is_profile_hidden=True)
+    if request.method == 'POST':
+        if 'yesli profil ne vybran':
+            form = SearchForm()
+            form.profile
+            return render_template('search.html', title='Поиск ВУЗа', form=form, current_user=current_user,
+                               contest_names=contest_names, is_profile_hidden=False)
+        if 'yesli s profilem':
+            return
 
 
 if __name__ == '__main__':
