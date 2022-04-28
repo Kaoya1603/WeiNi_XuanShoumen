@@ -114,8 +114,8 @@ p {
 .com-tab {
   width: 90%;
   margin: auto;
+  margin-bottom: 60px;
   font-family: sans-serif;
-  font-size: 27px;
   color: #343232;
   border: 2px solid grey;
 }

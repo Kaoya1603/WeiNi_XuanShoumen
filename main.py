@@ -5,6 +5,7 @@ from data.db_session import global_init, create_session
 from models.competition import Competition
 from models.orientation import Orientation
 from models.user import User
+from models.university import University
 
 from forms.login import LoginForm
 from forms.register import RegisterForm
@@ -12,7 +13,6 @@ from forms.search import SearchForm
 
 app = Flask('__name__')
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-app.config['DEBUG'] = True
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -21,7 +21,7 @@ login_manager.init_app(app)
 def main():
     global_init('db/competitions.db')
 
-    # from data.competitions import data
+    # from data.competitions import competitions as data
     # db_sess = create_session()
     # for i in data:
     #     new_olymp = Competition(
@@ -41,7 +41,19 @@ def main():
     #     password='aoyunhui',
     #     hashed_password='zhongguo'
     # )
-    # db_sess.add(new_user)
+    # for i in data:
+    #     university = University(
+    #         university=i[0],
+    #         speciality=i[1],
+    #         competition=i[2],
+    #         profile=i[3],
+    #         subject=i[4],
+    #         exam_scores=i[5],
+    #         privilege=i[6],
+    #         status=i[7],
+    #         grade=i[8]
+    #     )
+    #     db_sess.add(university)
     # db_sess.commit()
     app.run()
 
@@ -122,20 +134,49 @@ def register():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
+    db_sess = create_session()
+    contest_names = list(x[0] for x in db_sess.query(Competition.competition).distinct().all())
     if request.method == 'GET':
         form = SearchForm()
-        db_sess = create_session()
-        contest_names = list(x[0] for x in db_sess.query(Competition.competition).distinct().all())
         return render_template('search.html', title='Поиск ВУЗа', form=form, current_user=current_user,
-                               contest_names=contest_names, is_profile_hidden=True)
+                               contest_names=contest_names, is_profile_hidden=True, is_table_hidden=True, c=dict())
     if request.method == 'POST':
-        if 'yesli profil ne vybran':
-            form = SearchForm()
-            form.profile
+        form = SearchForm()
+        if not form.profile.data:
+            a = db_sess.query(Competition.profile).filter(Competition.competition == form.competition.data).all()
+            if a:
+                form.profile.choices = list(x[0] for x in a)
+            else:
+                form.profile.errors = ["Олимпиад по вашему запросу не найдено"]
             return render_template('search.html', title='Поиск ВУЗа', form=form, current_user=current_user,
-                               contest_names=contest_names, is_profile_hidden=False)
-        if 'yesli s profilem':
-            return
+                                   contest_names=contest_names, is_profile_hidden=False, is_table_hidden=True)
+        else:
+            competition, profile = form.competition.data, form.profile.data
+            b = db_sess.query(University).filter(
+                University.competition == competition, University.profile == profile).all()
+            c = dict()
+            for university in b:
+                if university.university not in c.keys():
+                    c[university.university] = [{university.speciality: [(university.subject, university.exam_scores,
+                                                                          university.privilege, university.status,
+                                                                          university.grade)]}]
+                    c[university.university].append(1)
+                elif university.university in c.keys() and university.speciality not in c[university.university][0].keys():
+                    c[university.university][0][university.speciality] = [(university.subject, university.exam_scores,
+                                                                           university.privilege, university.status,
+                                                                           university.grade)]
+                    c[university.university][1] += 1
+                else:
+                    c[university.university][0][university.speciality].append((university.subject, university.exam_scores,
+                                                                            university.privilege, university.status,
+                                                                            university.grade))
+                    c[university.university][1] += 1
+            print(c)
+            print(len(c['НИУ ВШЭ (Москва)'][0]["Математика"]))
+            form.profile.choices = list(x[0] for x in db_sess.query(Competition.profile).filter(
+                Competition.competition == form.competition.data).all())
+            return render_template('search.html', title='Поиск ВУЗа', form=form, current_user=current_user,
+                                   contest_names=contest_names, is_profile_hidden=False, is_table_hidden=False, c=c)
 
 
 if __name__ == '__main__':

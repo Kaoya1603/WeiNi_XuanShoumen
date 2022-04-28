@@ -47,6 +47,53 @@
     <div>{{ message }}</div>
 </form>
 
+{% if not is_table_hidden %}
+<table class="com-tab">
+    <tr>
+        <th>ВУЗ</th>
+        <th>Образовательная программа</th>
+        <th>Один или несколько предметов, по которым поступающим необходимы результаты ЕГЭ для подтверждения особого права</th>
+        <th>Количество баллов ЕГЭ, которое подтверждает особое право</th>
+        <th>Вид особого права</th>
+        <th>Кому предоставляется особое право</th>
+        <th>В каких классах должны быть получены результаты олимпиады</th>
+    </tr>
+    {% for university in c.keys() %}
+        <tr>
+            {% if c[university][1] >1 %}
+                <td rowspan={{c[university][1]}}>{{ university }}</td>
+            {% else %}
+                <td>{{ university }}</td>
+            {% endif %}
+            {% for speciality in c[university][0].keys() %}
+                {% if c[university][0][speciality]|length >1 %}
+                    <td rowspan={{(c[university][0][speciality])|length}}>{{ speciality }}</td>
+                {% else %}
+                    <td>{{ speciality }}</td>
+                {% endif %}
+                {% for i in c[university][0][speciality] %}
+                    {% if loop.index == 1 %}
+                        <td>{{ i[0] }}</td>
+                        <td>{{ i[1] }}</td>
+                        <td>{{ i[2] }}</td>
+                        <td>{{ i[3] }}</td>
+                        <td>{{ i[4] }}</td>
+        </tr>
+                    {% else %}
+                        <tr>
+                            <td>{{ i[0] }}</td>
+                            <td>{{ i[1] }}</td>
+                            <td>{{ i[2] }}</td>
+                            <td>{{ i[3] }}</td>
+                            <td>{{ i[4] }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+    {% endfor %}
+</table>
+{% endif %}
+
 <script>
     var contestNames = {{ contest_names|safe }};
     <!--    var profiles = {{ profiles|safe }};-->
