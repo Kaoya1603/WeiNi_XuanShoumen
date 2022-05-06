@@ -2,8 +2,8 @@ import sqlalchemy
 from data.db_session import SqlAlchemyBase
 
 
-class Competition(SqlAlchemyBase):
-    __tablename__ = 'competitions'
+class Favorite(SqlAlchemyBase):
+    __tablename__ = 'favorites'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
@@ -13,3 +13,4 @@ class Competition(SqlAlchemyBase):
     subject = sqlalchemy.Column(sqlalchemy.String, nullable=False)
     level = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
     register = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    send_alerts = sqlalchemy.Column(sqlalchemy.Boolean, nullable=False)

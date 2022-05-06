@@ -17,7 +17,7 @@
 <div class="image-block-variative">
     <img src="/static/img/msu_var.jpg">
     <div class="title">
-        <p>Перечень олимпиад РСОШ</p>
+        <p>Перечень олимпиад школьников</p>
     </div>
 </div>
 {% for orientation in orientations %}
@@ -38,9 +38,11 @@
         {% for competition in competitions[orientation.id].keys() %}
             <tr>
                 {% if competitions[orientation.id][competition]|length >1 %}
-                    <td rowspan={{competitions[orientation.id][competition]|length}}>{{competition}}</td>
+                <td rowspan={{competitions[orientation.id][competition]|length}}>
+                    <button class="com-tab button" onclick="addFavorite()">{{competition}}></button>
+                </td>
                 {% else %}
-                    <td>{{competition}}</td>
+                    <td><button class="com-tab button" onclick="addFavorite()">{{competition}}></button></td>
                 {% endif %}
                 {% for i in competitions[orientation.id][competition] %}
                     {% if loop.index == 1 %}
@@ -59,4 +61,46 @@
         {% endfor %}
     </table>
 {% endfor %}
+<div class="modal">
+    <div class="modal-dialog">
+        <button class="modal-close-button">
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 28 28"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M2 2L26 26" stroke="#681717" stroke-width="3" />
+            <path d="M26 2L2 26" stroke="#681717" stroke-width="3" />
+          </svg>
+        </button>
+        <form action="" method="post" name="add-fav">
+            {{ form.hidden_tag() }}
+            <h3>Добавление олимпиады в закладки</h3>
+            <p>
+                {{ form.competition.label }}<br>
+                {{ form.competition(class="form-control", type="competition", value="") }}<br>
+                {% for error in form.competition.errors %}
+                    <div>
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.profile.label }}<br>
+                {{ form.profile(class="form-control", type="profile") }}<br>
+                {% for error in form.profile.errors %}
+                    <div>
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </p>
+            <p><input type="checkbox">{{ form.send_alerts_to_me.label }}</p>
+            <p>{{ form.submit(type="submit", class="btn-submit") }}</p>
+            <div>{{ message }}</div>
+        </form>
+    </div>
+</div>
+<script src="{{url_for('static', filename='js/addFavorite.js')}}"></script>
 {% endblock %}

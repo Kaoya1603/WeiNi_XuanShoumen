@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<nav>
+    <a href="/"><img src="/static/img/logo.svg"></a>
+    <a href="/logout">Выйти</a>
+</nav>
+
+<div class="image-block-variative">
+    <img src="/static/img/msu_var.jpg">
+    <div class="title">
+        <p>{{ current_user.name }}</p>
+    </div>
+</div>
+
+<div class="email-check">
+    <p>Получать уведомления на почту о приближении олимпиад</p>
+    <label class="switch">
+      <input type="checkbox">
+      <span class="slider"></span>
+    </label>
+</div>
+
+<script src="{{url_for('static', filename='js/mailing.js')}}"></script>
+<script src="https://smtpjs.com/v3/smtp.js"></script>
+{% endblock %}
